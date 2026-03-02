@@ -1,6 +1,6 @@
 <x-layouts.layout>
 
-        <form method="POST" action="/livors/{{ $livro->id }}">
+        <form method="POST" action="/livros/{{ $livro->id }}">
             @csrf
             @method('PATCH')
 
