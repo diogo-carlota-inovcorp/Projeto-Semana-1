@@ -101,9 +101,15 @@ class LivroController extends Controller
 
     }
 
+
+
     public function show(Livro $livro)
     {
-        $livro->load(['editora', 'autores']);
+        $livro->load([
+            'editora',
+            'autores',
+            'requisicoes.user' => fn($q) => $q->latest('requisitado_em'),
+        ]);
 
         return view('livros.show', compact('livro'));
     }
@@ -121,5 +127,58 @@ class LivroController extends Controller
             ->route('livros.livro')
             ->with('success', 'Livro apagado com sucesso.');
     }
+
+    public function update(Request $request, Livro $livro)
+    {
+
+
+
+        // ✅ Validate
+        $validated = $request->validate([
+            'nome' => 'required|string|max:255',
+            'isbn' => 'required|string|max:50',
+            'bibliografia' => 'nullable|string',
+            'preco' => 'required|numeric|min:0',
+            'descricao' => 'nullable|string',
+            'imagem_capa' => 'nullable|image|max:2048', // max 2MB
+        ]);
+
+
+        if ($request->hasFile('imagem_capa')) {
+
+
+            if ($livro->imagem_capa && Storage::exists($livro->imagem_capa)) {
+                Storage::delete($livro->imagem_capa);
+            }
+
+
+            $validated['imagem_capa'] = $request
+                ->file('imagem_capa')
+                ->store('capas', 'public');
+        }
+
+
+        $livro->update($validated);
+
+
+        return redirect()
+            ->route('livros.show', $livro->id)
+            ->with('success', 'Livro atualizado com sucesso!');
+    }
+
+
+    public function editar(Livro $livro)
+    {
+        ;
+
+        $autores  = Autor::orderBy('nome')->get();
+        $editoras = Editora::orderBy('nome')->get();
+
+
+        $livro->load('autores', 'editora');
+
+        return view('admin.editar_livro', compact('livro', 'autores', 'editoras'));
+    }
+
 
 }

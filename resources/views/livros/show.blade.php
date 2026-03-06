@@ -25,6 +25,7 @@
                     <span class="font-semibold">Autor(es):</span> {{ $livro->autores->pluck('nome')->join(', ') ?: '—' }} <br>
                     <span class="font-semibold">Bibliografia:</span> {{ $livro->bibliografia }} <br>
                     <span class="font-semibold">Preço:</span> {{ $livro->preco }} € <br>
+
                 </p>
 
                 {{-- If you have description --}}
@@ -40,23 +41,45 @@
                         Voltar
                     </a>
 
-                    {{-- ADMIN ONLY DELETE --}}
-                    @auth
-                        @if(auth()->user()->ViewAdicionar)
-                            <form method="POST" action="{{ route('livros.destroy', $livro) }}"
-                                  onsubmit="return confirm('Tem certeza que deseja apagar este livro?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-error">
-                                    Apagar Livro
-                                </button>
-                            </form>
-                        @endif
-                    @endauth
+                    @can('ViewAdicionar')
+                        <a href="{{ route('livros.edit', $livro->id) }}" class="btn btn-primary">
+                            Editar
+                        </a>
+                    @endcan
                 </div>
 
             </div>
         </div>
     </div>
+    <hr class="my-8 opacity-20">
+
+    <h2 class="text-xl font-bold mb-4">Histórico de Requisições</h2>
+
+    @if($livro->requisicoes->isEmpty())
+        <div class="alert alert-info">Este livro ainda não foi requisitado.</div>
+    @else
+        <div class="overflow-x-auto bg-base-200 rounded-lg">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Cidadão</th>
+                    <th>Status</th>
+                    <th>Requisitado</th>
+                    <th>Previsto</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($livro->requisicoes as $r)
+                    <tr>
+                        <td>{{ $r->user->name ?? $r->user->nome ?? '—' }}</td>
+                        <td><span class="badge">{{ $r->status }}</span></td>
+                        <td>{{ optional($r->requisitado_em)->format('d/m/Y H:i') }}</td>
+                        <td>{{ optional($r->fim_previsto)->format('d/m/Y') }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    @endif
 
 </x-layouts.layout>

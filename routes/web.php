@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LivroExportController;
+use App\Http\Controllers\RequisicaoController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -9,6 +10,9 @@ use App\Http\Controllers\AutorController;
 use App\Http\Controllers\EditoraController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\auth\SessionsController;
+use App\Http\Controllers\AdminUsersController;
+use App\Http\Controllers\PerfilController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,32 +20,21 @@ use App\Http\Controllers\auth\SessionsController;
 |--------------------------------------------------------------------------
 */
 Route::get('/livros/index', [HomeController::class, 'index'])->name('home');
+Route::get('/livros/livro', [LivroController::class, 'livro'])->name('livros.livro');
+Route::get('/livros/autor', [AutorController::class, 'index'])->name('livros.autor');
+Route::get('/livros/editora', [EditoraController::class, 'index'])->name('livros.editora');
+Route::get('/livros/{livro}', [LivroController::class, 'show'])->name('livros.show');
 
 /*
 |--------------------------------------------------------------------------
-| Auth + Email Verified routes (main app)
+| Auth + verified
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // Livros (lista)
-    Route::get('/livros/livro', [LivroController::class, 'livro'])->name('livros.livro');
+    // ✅ Admin-only routes (role-based)
+    Route::middleware('admin')->group(function () {
 
-    // Autores / Editoras (rotas específicas PRIMEIRO)
-    Route::get('/livros/autor', [AutorController::class, 'index'])->name('livros.autor');
-    Route::get('/livros/editora', [EditoraController::class, 'index'])->name('livros.editora');
-
-    // Livros (detalhe/apagar) - genérica DEPOIS e só números
-    Route::get('/livros/{livro}', [LivroController::class, 'show'])
-        ->whereNumber('livro')
-        ->name('livros.show');
-
-    Route::delete('/livros/{livro}', [LivroController::class, 'destroy'])
-        ->whereNumber('livro')
-        ->name('livros.destroy');
-
-    // Admin
-    Route::middleware('can:ViewAdicionar')->group(function () {
         Route::get('/admin/admin', [AdminController::class, 'index'])->name('admin.index');
 
         Route::get('/admin/adicionar_livro', [AdminController::class, 'adicionar_livro'])->name('admin.adicionar_livro');
@@ -52,15 +45,42 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/admin/adicionar_autor', [AdminController::class, 'store_autor'])->name('admin.adicionar_autor.store');
         Route::post('/admin/adicionar_editora', [AdminController::class, 'store_editora'])->name('admin.adicionar_editora.store');
 
+        Route::get('/livros/{livro}/editar', [LivroController::class, 'editar'])
+            ->whereNumber('livro')
+            ->name('livros.edit');
+
+        Route::patch('/livros/{livro}', [LivroController::class, 'update'])
+            ->whereNumber('livro')
+            ->name('livros.update');
+
+        Route::delete('/livros/{livro}', [LivroController::class, 'destroy'])
+            ->whereNumber('livro')
+            ->name('livros.destroy');
+
+        // Admin users management
+        Route::get('/admin/utilizadores', [AdminUsersController::class, 'index'])->name('admin.users.index');
+        Route::patch('/admin/utilizadores/{user}/promover', [AdminUsersController::class, 'promote'])->name('admin.users.promote');
+        Route::patch('/admin/utilizadores/{user}/rebaixar', [AdminUsersController::class, 'demote'])->name('admin.users.demote');
+
+        Route::get('/admin/utilizadores/{user}/requisicoes', [RequisicaoController::class, 'userRequisicoes'])->name('admin.users.requisicoes');
+
+        Route::get('/admin/utilizadores/{user}/historico', [AdminUsersController::class, 'historico'])->name('admin.users.historico');
+
+        Route::patch('/admin/requisicoes/{requisicao}/confirmar-devolucao', [RequisicaoController::class, 'confirmarDevolucao'])->name('admin.requisicoes.confirmarDevolucao');
+
 
 
     });
-});
 
+
+
+});
 
 Route::get('/livros/exportar-excel', [LivroExportController::class, 'export'])
     ->middleware('auth')
     ->name('livros.exportar.excel');
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -68,3 +88,17 @@ Route::get('/livros/exportar-excel', [LivroExportController::class, 'export'])
 |--------------------------------------------------------------------------
 */
 Route::delete('/logout', [SessionsController::class, 'destroy'])->name('logout');
+
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/requisicoes', [RequisicaoController::class, 'index'])->name('requisicoes.index');
+    Route::post('/requisicoes', [RequisicaoController::class, 'store'])->name('requisicoes.store');
+    Route::get('/minhas-requisicoes', [RequisicaoController::class, 'minhas'])->middleware('auth')->name('requisicoes.minhas');
+    Route::patch('/requisicoes/{requisicao}/entregar', [RequisicaoController::class, 'entregar'])->middleware('auth')->name('requisicoes.entregar');
+    Route::patch('/requisicoes/{requisicao}/pedir-devolucao', [RequisicaoController::class, 'pedirDevolucao'])->name('requisicoes.pedirDevolucao');
+    Route::get('/perfil', [PerfilController::class, 'show'])->name('perfil.show');
+    Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+    Route::get('/requisicoes/{requisicao}', [RequisicaoController::class, 'show'])->name('requisicoes.show');
+
+});

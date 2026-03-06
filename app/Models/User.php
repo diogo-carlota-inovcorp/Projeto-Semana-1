@@ -15,6 +15,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'foto_perfil',
     ];
 
     protected $hidden = [
@@ -22,9 +23,17 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    public function requisicoes()
+    {
+        return $this->hasMany(Requisicao::class);
+    }
 
+    public function getFotoPerfilUrlAttribute()
+    {
+        if ($this->foto_perfil) {
+            return asset('storage/' . $this->foto_perfil);
+        }
 
+        return asset('images/default-avatar.png');
+    }
 }
-
-
-

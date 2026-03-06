@@ -77,4 +77,9 @@ class AdminController extends Controller
         return redirect()->route('livros.autor')->with('success', 'Autor adicionado!');
     }
 
+    public function editar_livro($id)
+    {
+        return view('admin.editar_livro');
+    }
+
 }

@@ -10,16 +10,24 @@
                 <li><a href="{{ route('livros.livro') }}">Livros</a></li>
                 <li><a href="{{ route('livros.editora') }}">Editoras</a></li>
                 <li><a href="{{ route('livros.autor') }}">Autores</a></li>
+                @auth
+                    <li><a href="{{ route('requisicoes.index') }}">Requisições</a></li>
+                @endauth
 
             </ul>
         </div>
         <a class="btn btn-ghost text-xl " href="/livros/index" >Home</a>
+        <a class="btn btn-ghost text-xl " href="{{ route('perfil.show') }}" >Perfil</a>
+
     </div>
     <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1 font-bold text-md">
             <li><a href="{{ route('livros.livro') }}">Livros</a></li>
             <li><a href="{{ route('livros.editora') }}">Editoras</a></li>
             <li><a href="{{ route('livros.autor') }}">Autores</a></li>
+            @auth
+                <li><a href="{{ route('requisicoes.index') }}">Requisições</a></li>
+            @endauth
         </ul>
     </div>
     <div class="navbar-end space-x-2">
@@ -32,7 +40,12 @@
         @auth
 
                 @can('ViewAdicionar')
+                    <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">
+                        Utilizadores
+                    </a>
+
                     <a class="btn btn-soft" href="/admin/admin">Admin</a>
+
                 @endcan
 
             <form method="POST" action="/logout">
