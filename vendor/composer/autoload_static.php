@@ -105,6 +105,7 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
             'Symfony\\Component\\CssSelector\\' => 30,
             'Symfony\\Component\\Console\\' => 26,
             'Symfony\\Component\\Clock\\' => 24,
+            'Scriptotek\\GoogleBooks\\' => 23,
         ),
         'R' =>
         array (
@@ -380,6 +381,10 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'Symfony\\Component\\Clock\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/clock',
+        ),
+        'Scriptotek\\GoogleBooks\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/scriptotek/google-books/src',
         ),
         'Ramsey\\Uuid\\' =>
         array (
@@ -712,17 +717,27 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'App\\Actions\\Fortify\\ResetUserPassword' => __DIR__ . '/../..' . '/app/Actions/Fortify/ResetUserPassword.php',
         'App\\Actions\\Fortify\\UpdateUserPassword' => __DIR__ . '/../..' . '/app/Actions/Fortify/UpdateUserPassword.php',
         'App\\Actions\\Fortify\\UpdateUserProfileInformation' => __DIR__ . '/../..' . '/app/Actions/Fortify/UpdateUserProfileInformation.php',
+        'App\\Console\\Commands\\EnviarRemindersRequisicoes' => __DIR__ . '/../..' . '/app/Console/Commands/EnviarRemindersRequisicoes.php',
+        'App\\Exports\\LivrosExport' => __DIR__ . '/../..' . '/app/Exports/LivrosExport.php',
         'App\\Http\\Controllers\\AdminController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminController.php',
+        'App\\Http\\Controllers\\AdminUsersController' => __DIR__ . '/../..' . '/app/Http/Controllers/AdminUsersController.php',
         'App\\Http\\Controllers\\AutorController' => __DIR__ . '/../..' . '/app/Http/Controllers/AutorController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\EditoraController' => __DIR__ . '/../..' . '/app/Http/Controllers/EditoraController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\LivroController' => __DIR__ . '/../..' . '/app/Http/Controllers/LivroController.php',
+        'App\\Http\\Controllers\\LivroExportController' => __DIR__ . '/../..' . '/app/Http/Controllers/LivroExportController.php',
+        'App\\Http\\Controllers\\PerfilController' => __DIR__ . '/../..' . '/app/Http/Controllers/PerfilController.php',
+        'App\\Http\\Controllers\\RequisicaoController' => __DIR__ . '/../..' . '/app/Http/Controllers/RequisicaoController.php',
         'App\\Http\\Controllers\\auth\\SessionsController' => __DIR__ . '/../..' . '/app/Http/Controllers/auth/SessionsController.php',
+        'App\\Http\\Middleware\\AdminMiddleware' => __DIR__ . '/../..' . '/app/Http/Middleware/AdminMiddleware.php',
         'App\\Models\\Autor' => __DIR__ . '/../..' . '/app/Models/Autor.php',
         'App\\Models\\Editora' => __DIR__ . '/../..' . '/app/Models/Editora.php',
         'App\\Models\\Livro' => __DIR__ . '/../..' . '/app/Models/Livro.php',
+        'App\\Models\\Requisicao' => __DIR__ . '/../..' . '/app/Models/Requisicao.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Notifications\\AdminNovaRequisicaoNotification' => __DIR__ . '/../..' . '/app/Notifications/AdminNovaRequisicaoNotification.php',
+        'App\\Notifications\\RequisicaoConfirmadaNotification' => __DIR__ . '/../..' . '/app/Notifications/RequisicaoConfirmadaNotification.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\FortifyServiceProvider' => __DIR__ . '/../..' . '/app/Providers/FortifyServiceProvider.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
@@ -7796,6 +7811,16 @@ class ComposerStaticInitc514d8f7b9fc5970bdd94287905ef584
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
         'ReflectionConstant' => __DIR__ . '/..' . '/symfony/polyfill-php84/Resources/stubs/ReflectionConstant.php',
         'SQLite3Exception' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/SQLite3Exception.php',
+        'Scriptotek\\GoogleBooks\\Bookshelf' => __DIR__ . '/..' . '/scriptotek/google-books/src/Bookshelf.php',
+        'Scriptotek\\GoogleBooks\\Bookshelves' => __DIR__ . '/..' . '/scriptotek/google-books/src/Bookshelves.php',
+        'Scriptotek\\GoogleBooks\\Exceptions\\GoogleApiException' => __DIR__ . '/..' . '/scriptotek/google-books/src/Exceptions/GoogleApiException.php',
+        'Scriptotek\\GoogleBooks\\Exceptions\\InvalidConfiguration' => __DIR__ . '/..' . '/scriptotek/google-books/src/Exceptions/InvalidConfiguration.php',
+        'Scriptotek\\GoogleBooks\\Exceptions\\UsageLimitExceeded' => __DIR__ . '/..' . '/scriptotek/google-books/src/Exceptions/UsageLimitExceeded.php',
+        'Scriptotek\\GoogleBooks\\GoogleBooks' => __DIR__ . '/..' . '/scriptotek/google-books/src/GoogleBooks.php',
+        'Scriptotek\\GoogleBooks\\GoogleBooksFacade' => __DIR__ . '/..' . '/scriptotek/google-books/src/GoogleBooksFacade.php',
+        'Scriptotek\\GoogleBooks\\GoogleBooksServiceProvider' => __DIR__ . '/..' . '/scriptotek/google-books/src/GoogleBooksServiceProvider.php',
+        'Scriptotek\\GoogleBooks\\Volume' => __DIR__ . '/..' . '/scriptotek/google-books/src/Volume.php',
+        'Scriptotek\\GoogleBooks\\Volumes' => __DIR__ . '/..' . '/scriptotek/google-books/src/Volumes.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
         'SebastianBergmann\\CliParser\\OptionDoesNotAllowArgumentException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/OptionDoesNotAllowArgumentException.php',

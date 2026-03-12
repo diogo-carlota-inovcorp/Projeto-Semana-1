@@ -41,7 +41,7 @@
                                             src="{{ $logoUrl }}"
                                             alt="Foto de {{ $editora->nome }}"
                                             class="h-12 w-12 object-cover rounded-lg"
-                                            onerror="this.onerror=null;this.src='{{ asset('images/editora-default.jpg') }}';"
+                                            onerror="this.onerror=null;this.src='{{ asset('images/editora-default.png') }}';"
                                         />
                                     </div>
                                 </div>

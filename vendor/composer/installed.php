@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'laravel/laravel',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '0d8b16eedcafbae42e22cb9d058cb504ea624c9a',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -497,9 +497,9 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '0d8b16eedcafbae42e22cb9d058cb504ea624c9a',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -1123,6 +1123,15 @@
             'replaced' => array(
                 0 => '4.9.2',
             ),
+        ),
+        'scriptotek/google-books' => array(
+            'pretty_version' => 'v0.2.6',
+            'version' => '0.2.6.0',
+            'reference' => '55b4b96b006fcd41997a85cd89fff5e6529bffa1',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../scriptotek/google-books',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'sebastian/cli-parser' => array(
             'pretty_version' => '4.2.0',

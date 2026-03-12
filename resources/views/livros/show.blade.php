@@ -10,9 +10,9 @@
         <div class="hero-content flex-col lg:flex-row gap-8">
 
             <img
-                src="{{ $capaUrl }}"
-                class="max-w-xs w-full rounded-lg shadow-2xl object-cover"
+                src="{{ $livro->imagem_capa ? str_replace('http://', 'https://', $livro->imagem_capa) : asset('images/capa-default.jpg') }}"
                 alt="{{ $livro->nome }}"
+                class="w-full h-full object-cover rounded-t-lg"
                 onerror="this.onerror=null;this.src='{{ asset('images/capa-default.jpg') }}';"
             />
 

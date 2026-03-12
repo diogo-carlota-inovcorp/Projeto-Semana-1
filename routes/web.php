@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\BookRequestController;
+use App\Http\Controllers\Google_LivrosController;
 use App\Http\Controllers\LivroExportController;
 use App\Http\Controllers\RequisicaoController;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +70,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::patch('/admin/requisicoes/{requisicao}/confirmar-devolucao', [RequisicaoController::class, 'confirmarDevolucao'])->name('admin.requisicoes.confirmarDevolucao');
 
+        Route::get('/google-books', [Google_LivrosController::class, 'index'])->name('google-books.index');
+        Route::get('/google-books/search', [Google_LivrosController::class, 'search'])->name('google-books.search');
+        Route::post('/google-books/import', [Google_LivrosController::class, 'import'])->name('google-books.import');
 
 
     });
@@ -90,7 +95,7 @@ Route::get('/livros/exportar-excel', [LivroExportController::class, 'export'])
 Route::delete('/logout', [SessionsController::class, 'destroy'])->name('logout');
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/requisicoes', [RequisicaoController::class, 'index'])->name('requisicoes.index');
     Route::post('/requisicoes', [RequisicaoController::class, 'store'])->name('requisicoes.store');
@@ -100,5 +105,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perfil', [PerfilController::class, 'show'])->name('perfil.show');
     Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
     Route::get('/requisicoes/{requisicao}', [RequisicaoController::class, 'show'])->name('requisicoes.show');
+
+    Route::get('/book-request', [BookRequestController::class, 'create'])->name('google-books.create');
+    Route::post('/book-request', [BookRequestController::class, 'store'])->name('google-books.store');
 
 });

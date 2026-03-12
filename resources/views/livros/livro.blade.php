@@ -44,9 +44,9 @@
             <div class="card bg-base-100 shadow-sm border border-base-300">
                 <figure class="px-4 pt-4">
                     <img
-                        class="w-full h-43 object-cover rounded-xl"
-                        src="{{ $capaUrl }}"
+                        src="{{ $livro->imagem_capa ? str_replace('http://', 'https://', $livro->imagem_capa) : asset('images/capa-default.jpg') }}"
                         alt="{{ $livro->nome }}"
+                        class="w-full h-48 object-cover rounded-t-lg"
                         onerror="this.onerror=null;this.src='{{ asset('images/capa-default.jpg') }}';"
                     />
                 </figure>
@@ -93,5 +93,12 @@
             </div>
         </div>
     @endif
+
+    <p class="text-center mt-10 text-base-content/70">
+        Não encontras um livro que gostes?
+        <a href="{{ route('google-books.create') }}" class="link link-primary">
+            Carrega aqui
+        </a>
+    </p>
 
 </x-layouts.layout>

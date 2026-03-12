@@ -25,7 +25,12 @@
             <li><a href="{{ route('livros.livro') }}">Livros</a></li>
             <li><a href="{{ route('livros.editora') }}">Editoras</a></li>
             <li><a href="{{ route('livros.autor') }}">Autores</a></li>
+
+            @can('ViewAdicionar')
+                <li><a href="{{ route('google-books.index') }}">Buscar Livros</a></li>
+            @endcan
             @auth
+
                 <li><a href="{{ route('requisicoes.index') }}">Requisições</a></li>
             @endauth
         </ul>
