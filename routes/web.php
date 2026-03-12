@@ -75,6 +75,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/google-books/import', [Google_LivrosController::class, 'import'])->name('google-books.import');
 
 
+        Route::get('/editora/{id}/editar', [LivroController::class, 'editarEditora'])->name('livros.editar_editora');
+        Route::put('/editora/{id}', [LivroController::class, 'updateEditora'])->name('livros.update_editora');
+
+        Route::get('/autor/{id}/editar', [LivroController::class, 'editarAutor'])->name('livros.editar_autor');
+        Route::put('/autor/{id}', [LivroController::class, 'updateAutor'])->name('livros.update_autor');
+
+
     });
 
 

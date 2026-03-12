@@ -20,7 +20,7 @@
                 <tr>
                     <th>Logo</th>
                     <th>Nome</th>
-                    <th></th>
+                    <th class="text-right">Ações</th>
                 </tr>
                 </thead>
 
@@ -53,12 +53,21 @@
                         </td>
 
                         <td class="text-right">
-                            <a
-                                href="{{ route('livros.livro', ['editora' => $editora->id]) }}"
-                                class="btn btn-primary btn-sm"
-                            >
-                                Ver livros
-                            </a>
+                            <div class="flex justify-end gap-2">
+                                <a
+                                    href="{{ route('livros.editar_editora', $editora->id) }}"
+                                    class="btn btn-secondary btn-sm"
+                                >
+                                    Editar
+                                </a>
+
+                                <a
+                                    href="{{ route('livros.livro', ['editora' => $editora->id]) }}"
+                                    class="btn btn-primary btn-sm"
+                                >
+                                    Ver livros
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 @empty
@@ -76,14 +85,12 @@
     @if ($editoras->hasPages())
         <div class="flex justify-center mt-6">
             <div class="join">
-                {{-- Previous --}}
                 @if ($editoras->onFirstPage())
                     <button class="join-item btn btn-outline btn-disabled">Página anterior</button>
                 @else
                     <a class="join-item btn btn-outline" href="{{ $editoras->previousPageUrl() }}">Página anterior</a>
                 @endif
 
-                {{-- Next --}}
                 @if ($editoras->hasMorePages())
                     <a class="join-item btn btn-outline" href="{{ $editoras->nextPageUrl() }}">Próxima</a>
                 @else

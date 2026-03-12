@@ -101,8 +101,6 @@ class LivroController extends Controller
 
     }
 
-
-
     public function show(Livro $livro)
     {
         $livro->load([
@@ -178,6 +176,61 @@ class LivroController extends Controller
         $livro->load('autores', 'editora');
 
         return view('admin.editar_livro', compact('livro', 'autores', 'editoras'));
+    }
+    public function editarEditora($id)
+    {
+        $editora = Editora::findOrFail($id);
+        return view('admin.editar_editora', compact('editora'));
+    }
+
+    public function updateEditora(Request $request, $id)
+    {
+        $editora = Editora::findOrFail($id);
+
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'logo' => 'nullable|image|max:2048',
+        ]);
+
+        $dados = [
+            'nome' => $request->nome,
+        ];
+
+        if ($request->hasFile('logo')) {
+            $dados['logo'] = $request->file('logo')->store('editoras', 'public');
+        }
+
+        $editora->update($dados);
+
+        return redirect()->route('livros.editora')->with('success', 'Editora atualizada com sucesso.');
+    }
+
+    public function editarAutor($id)
+    {
+        $autor = Autor::findOrFail($id);
+        return view('admin.editar_autor', compact('autor'));
+    }
+
+    public function updateAutor(Request $request, $id)
+    {
+        $autor = Autor::findOrFail($id);
+
+        $request->validate([
+            'nome' => 'required|string|max:255',
+            'foto' => 'nullable|image|max:2048',
+        ]);
+
+        $dados = [
+            'nome' => $request->nome,
+        ];
+
+        if ($request->hasFile('foto')) {
+            $dados['foto'] = $request->file('foto')->store('autores', 'public');
+        }
+
+        $autor->update($dados);
+
+        return redirect()->route('livros.autor')->with('success', 'Autor atualizado com sucesso.');
     }
 
 
