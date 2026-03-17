@@ -56,6 +56,15 @@ class Google_LivrosController extends Controller
 
         foreach ($booksData as $item) {
             $volumeInfo = $item['volumeInfo'] ?? [];
+            $saleInfo = $item['saleInfo'] ?? [];
+
+            $preco = $saleInfo['retailPrice']['amount']
+                ?? $saleInfo['listPrice']['amount']
+                ?? 0;
+
+            $moeda = $saleInfo['retailPrice']['currencyCode']
+                ?? $saleInfo['listPrice']['currencyCode']
+                ?? null;
 
             $books[] = [
                 'google_books_id' => $item['id'] ?? null,
@@ -71,6 +80,8 @@ class Google_LivrosController extends Controller
                     : null,
                 'paginas' => $volumeInfo['pageCount'] ?? null,
                 'data_publicacao' => $volumeInfo['publishedDate'] ?? null,
+                'preco' => $preco,
+                'moeda' => $moeda,
             ];
         }
 
@@ -95,6 +106,7 @@ class Google_LivrosController extends Controller
             'descricao' => 'nullable|string',
             'isbn' => 'nullable|string|max:255',
             'imagem_capa' => 'nullable|string',
+            'preco' => 'nullable|numeric',
         ]);
 
         $editora = \App\Models\Editora::firstOrCreate([
@@ -112,7 +124,7 @@ class Google_LivrosController extends Controller
         $livro->editoras_id = $editora->id;
         $livro->bibliografia = $request->descricao;
         $livro->imagem_capa = $request->imagem_capa;
-        $livro->preco = 0;
+        $livro->preco = $request->preco ?? 0;
         $livro->save();
 
         if ($request->filled('autores')) {

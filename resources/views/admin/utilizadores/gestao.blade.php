@@ -13,7 +13,7 @@
         @endif
 
         {{-- Search --}}
-        <form method="GET" action="{{ route('admin.users.index') }}" class="flex gap-2">
+        <form method="GET" action="{{ route('admin.users.gestao') }}" class="flex gap-2">
             <input
                 type="text"
                 name="q"
@@ -95,7 +95,7 @@
             </table>
         </div>
 
-        {{ $users->links() }}
+
 
     </div>
 

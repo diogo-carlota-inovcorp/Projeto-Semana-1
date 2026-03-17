@@ -108,6 +108,16 @@
                                 <span class="badge badge-success">Disponível</span>
                             @else
                                 <span class="badge badge-error">Indisponível</span>
+                                    @if($livro->requisicoes()->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])->exists())
+
+                                        <form method="POST" action="{{ route('livros.alerta', $livro) }}">
+                                            @csrf
+                                            <button class="btn btn-warning mt-4">
+                                                Avisar quando disponível
+                                            </button>
+                                        </form>
+
+                                    @endif
                             @endif
                         </td>
                         <td class="text-right">

@@ -36,4 +36,15 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return asset('images/default-avatar.png');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function alertas()
+    {
+        return $this->hasMany(AlertaLivro::class);
+    }
+
 }

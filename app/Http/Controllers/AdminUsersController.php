@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+
 class AdminUsersController extends Controller
 {
     public function index(Request $request)
@@ -20,7 +21,7 @@ class AdminUsersController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.utilizadores', compact('users', 'q'));
+        return view('admin.utilizador', compact('users', 'q'));
     }
     public function promote(User $user)
     {
@@ -40,5 +41,21 @@ class AdminUsersController extends Controller
         $user->save();
 
         return back()->with('success', "{$user->name} agora é Cidadão.");
+    }
+
+
+    public function gestao(Request $request)
+    {
+        $q = $request->query('q');
+
+        $users = User::query()
+            ->when($q, function ($query) use ($q) {
+                $query->where('name', 'like', "%{$q}%")
+                    ->orWhere('email', 'like', "%{$q}%");
+            })
+            ->latest()
+            ->get();
+
+        return view('admin.utilizadores.gestao', compact('users', 'q'));
     }
 }

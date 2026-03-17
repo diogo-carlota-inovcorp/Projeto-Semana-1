@@ -82,4 +82,75 @@
         </div>
     @endif
 
+    <div class="mt-10">
+        <h2 class="text-2xl font-bold mb-4">Reviews</h2>
+
+        <div class="mb-6">
+            @if($totalReviews > 0)
+                <div class="flex items-center gap-3">
+                <span class="text-xl font-semibold">
+                    Média: {{ number_format($mediaReviews, 1) }}/5
+                </span>
+                    <span class="text-base-content/70">
+                    ({{ $totalReviews }} review{{ $totalReviews > 1 ? 's' : '' }})
+                </span>
+                </div>
+            @else
+                <p class="text-base-content/70">Ainda não existem reviews ativas para este livro.</p>
+            @endif
+        </div>
+
+
+
+        @forelse($reviewsAtivas as $review)
+            <div class="card bg-base-100 shadow mb-4">
+                <div class="card-body">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="font-semibold">{{ $review->user->name }}</h3>
+                        <span class="badge badge-primary">{{ $review->rating }}/5</span>
+                    </div>
+
+                    <p>{{ $review->comentario }}</p>
+                    <p class="text-sm text-base-content/60 mt-2">
+                        {{ $review->created_at->format('d/m/Y H:i') }}
+                    </p>
+                </div>
+            </div>
+        @empty
+        @endforelse
+
+        @if($relacionados->count())
+            <div class="mt-10">
+                <h2 class="text-2xl font-bold mb-4">Livros Relacionados</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach($relacionados as $relacionado)
+                        <div class="card bg-base-100 shadow">
+                            <div class="card-body">
+                                <h3 class="card-title">{{ $relacionado->nome }}</h3>
+
+                                @if($relacionado->autores->count())
+                                    <p class="text-sm text-base-content/70">
+                                        {{ $relacionado->autores->pluck('nome')->join(', ') }}
+                                    </p>
+                                @endif
+
+                                <p class="text-sm">
+                                    {{ \Illuminate\Support\Str::limit($relacionado->bibliografia, 120) }}
+                                </p>
+
+                                <div class="card-actions justify-end">
+                                    <a href="{{ route('livros.show', $relacionado->id) }}" class="btn btn-primary btn-sm">
+                                        Ver detalhe
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+
+    </div>
+
 </x-layouts.layout>

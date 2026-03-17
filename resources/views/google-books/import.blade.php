@@ -38,6 +38,7 @@
                                 <input type="hidden" name="descricao" value="{{ $book['descricao'] }}">
                                 <input type="hidden" name="isbn" value="{{ $book['isbn'] }}">
                                 <input type="hidden" name="imagem_capa" value="{{ $book['capa_thumbnail'] ?? '' }}">
+                                <input type="hidden" name="preco" value="{{ $book['preco'] }}">
                                 <button type="submit" class="btn btn-xs btn-success">Importar</button>
                             </form>
                         </div>

@@ -5,7 +5,6 @@ use App\Http\Controllers\Google_LivrosController;
 use App\Http\Controllers\LivroExportController;
 use App\Http\Controllers\RequisicaoController;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LivroController;
 use App\Http\Controllers\AutorController;
@@ -14,6 +13,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\auth\SessionsController;
 use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminReviewController;
+
+
+
 
 
 /*
@@ -34,7 +38,7 @@ Route::get('/livros/{livro}', [LivroController::class, 'show'])->name('livros.sh
 */
 Route::middleware(['auth', 'verified'])->group(function () {
 
-    // ✅ Admin-only routes (role-based)
+
     Route::middleware('admin')->group(function () {
 
         Route::get('/admin/admin', [AdminController::class, 'index'])->name('admin.index');
@@ -81,8 +85,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/autor/{id}/editar', [LivroController::class, 'editarAutor'])->name('livros.editar_autor');
         Route::put('/autor/{id}', [LivroController::class, 'updateAutor'])->name('livros.update_autor');
 
+        Route::get('/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+        Route::get('/reviews/{review}', [AdminReviewController::class, 'show'])->name('admin.reviews.show');
+        Route::put('/reviews/{review}', [AdminReviewController::class, 'update'])->name('admin.reviews.update');
 
-    });
+        Route::get('/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+        Route::get('/reviews/{review}', [AdminReviewController::class, 'show'])->name('admin.reviews.show');
+        Route::put('/reviews/{review}', [AdminReviewController::class, 'update'])->name('admin.reviews.update');
+
+
+        Route::get('/utilizadores/gestao', [AdminUsersController::class, 'gestao'])->name('admin.users.gestao');
+
+            Route::get('/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+            Route::get('/reviews/{review}', [AdminReviewController::class, 'show'])->name('admin.reviews.show');
+            Route::put('/reviews/{review}', [AdminReviewController::class, 'update'])->name('admin.reviews.update');
+        });
+
+
+
+
+
 
 
 
@@ -115,5 +137,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('/book-request', [BookRequestController::class, 'create'])->name('google-books.create');
     Route::post('/book-request', [BookRequestController::class, 'store'])->name('google-books.store');
-
+    Route::post('/requisicoes/{requisicao}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::patch('/requisicoes/{requisicao}/pedir-devolucao', [RequisicaoController::class, 'pedirDevolucao'])->name('requisicoes.pedirDevolucao');
+    Route::post('/livros/{livro}/alerta', [LivroController::class, 'alerta'])->name('livros.alerta')->middleware('auth');
 });

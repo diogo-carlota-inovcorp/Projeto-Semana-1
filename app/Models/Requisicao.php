@@ -35,4 +35,11 @@ class Requisicao extends Model
             $req->numero = 'Requisição-' . str_pad((string)$nextId, 6, '0', STR_PAD_LEFT);
         });
     }
+
+    public function review()
+    {
+        return $this->hasOne(\App\Models\Review::class, 'requisicao_id');
+    }
+
+
 }

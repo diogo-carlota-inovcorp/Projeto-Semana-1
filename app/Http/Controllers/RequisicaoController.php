@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AlertaLivro;
 use App\Models\Livro;
 use App\Models\Requisicao;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Notifications\RequisicaoConfirmadaNotification;
 use App\Notifications\AdminNovaRequisicaoNotification;
+use App\Notifications\LivroDisponivelNotification;
+
 
 class RequisicaoController extends Controller
 {
@@ -16,13 +19,11 @@ class RequisicaoController extends Controller
         $q = $request->query('q');
 
         $livros = Livro::query()
-            ->when($q, fn($query) =>
-            $query->where('nome', 'like', "%{$q}%")
+            ->when($q, fn($query) => $query->where('nome', 'like', "%{$q}%")
                 ->orWhere('isbn', 'like', "%{$q}%")
             )
             ->withCount([
-                'requisicoes as requisicoes_ativas_count' => fn($qq) =>
-                $qq->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
+                'requisicoes as requisicoes_ativas_count' => fn($qq) => $qq->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
             ])
             ->orderBy('nome')
             ->paginate(10)
@@ -60,7 +61,7 @@ class RequisicaoController extends Controller
         ]);
 
         $user = auth()->user();
-        $livroId = (int) $validated['livro_id'];
+        $livroId = (int)$validated['livro_id'];
 
         $ativasUser = Requisicao::where('user_id', $user->id)
             ->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
@@ -121,8 +122,8 @@ class RequisicaoController extends Controller
     {
         $requisicoes = auth()->user()
             ->requisicoes()
-            ->with('livro')
-            ->whereIn('status', ['pendente', 'ativa'])
+            ->with(['livro', 'review'])
+            ->whereIn('status', ['pendente', 'ativa', 'por_confirmar', 'entregue'])
             ->latest()
             ->get();
 
@@ -143,18 +144,21 @@ class RequisicaoController extends Controller
 
     public function pedirDevolucao(Requisicao $requisicao)
     {
-        if ($requisicao->user_id !== auth()->id()) {
-            abort(403);
+        if ($requisicao->user_id != auth()->id()) {
+            abort(403, 'Esta requisição não pertence ao utilizador autenticado.');
         }
 
         if (!in_array($requisicao->status, ['pendente', 'ativa'])) {
-            return back()->with('error', 'Esta requisição não pode ser devolvida agora.');
+            return back()->with('error', 'Esta requisição não pode ser colocada para devolução.');
         }
 
-        $requisicao->status = 'por_confirmar';
-        $requisicao->save();
+        $requisicao->update([
+            'status' => 'por_confirmar',
+        ]);
 
-        return back()->with('success', 'Pedido de devolução enviado. Aguarda confirmação do Admin.');
+        return redirect()
+            ->route('requisicoes.minhas')
+            ->with('success', 'Pedido de devolução enviado. Aguarda confirmação do administrador.');
     }
 
     public function confirmarDevolucao(Requisicao $requisicao)
@@ -163,9 +167,27 @@ class RequisicaoController extends Controller
             return back()->with('error', 'Esta requisição não está por confirmar.');
         }
 
-        $requisicao->status = 'entregue';
-        $requisicao->save();
+        $requisicao->update([
+            'status' => 'entregue',
+            'devolvido_em' => now(),
+        ]);
 
-        return back()->with('success', 'Devolução confirmada. Livro disponível.');
+        $livro = $requisicao->livro;
+
+        $alertas = AlertaLivro::where('livro_id', $livro->id)
+            ->whereNull('notificado_em')
+            ->with('user')
+            ->get();
+
+        foreach ($alertas as $alerta) {
+            $alerta->user->notify(new LivroDisponivelNotification($livro));
+
+            $alerta->update([
+                'notificado_em' => now(),
+            ]);
+        }
+
+        return back()->with('success', 'Devolução confirmada. O utilizador já pode fazer a review.');
     }
 }
+

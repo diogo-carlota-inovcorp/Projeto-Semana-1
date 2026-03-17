@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Editora;
 use App\Models\Autor;
 use Illuminate\Http\Request;
+use App\Models\Review;
 
 class AdminController extends Controller
 {
@@ -13,7 +14,21 @@ class AdminController extends Controller
         $editoras = Editora::orderBy('nome')->get();
         $autores  = Autor::orderBy('nome')->get();
 
-        return view('admin.admin', compact('editoras', 'autores'));
+        // Reviews pendentes (por aceitar/recusar)
+        $reviewsPendentes = Review::with(['livro', 'user'])
+            ->where('estado', 'suspenso')
+            ->latest()
+            ->take(5) // só as mais recentes no dashboard
+            ->get();
+
+        $totalPendentes = Review::where('estado', 'suspenso')->count();
+
+        return view('admin.admin', compact(
+            'editoras',
+            'autores',
+            'reviewsPendentes',
+            'totalPendentes'
+        ));
     }
 
 
@@ -81,5 +96,6 @@ class AdminController extends Controller
     {
         return view('admin.editar_livro');
     }
+
 
 }

@@ -31,4 +31,19 @@ class Livro extends Model
         return $this->hasMany(\App\Models\Requisicao::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function reviewsAtivas()
+    {
+        return $this->hasMany(Review::class)->where('estado', 'ativo');
+    }
+
+    public function alertas()
+    {
+        return $this->hasMany(AlertaLivro::class);
+    }
+
 }

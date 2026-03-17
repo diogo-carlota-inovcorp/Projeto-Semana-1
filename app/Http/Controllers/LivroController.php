@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\AlertaLivro;
 use App\Models\Livro;
 use App\Models\Autor;
 use App\Models\Editora;
@@ -104,14 +104,67 @@ class LivroController extends Controller
     public function show(Livro $livro)
     {
         $livro->load([
-            'editora',
             'autores',
-            'requisicoes.user' => fn($q) => $q->latest('requisitado_em'),
+            'editora',
         ]);
 
-        return view('livros.show', compact('livro'));
-    }
+        $textoBase = $this->textoLivro($livro);
+        $palavrasBase = $this->normalizarTexto($textoBase);
 
+        $autorIds = $livro->autores->pluck('id')->toArray();
+        $editoraId = $livro->editora?->id;
+
+        $candidatos = Livro::with(['autores', 'editora'])
+            ->where('id', '!=', $livro->id)
+            ->get();
+
+        $relacionados = $candidatos->map(function ($candidato) use ($palavrasBase, $autorIds, $editoraId) {
+            $textoCandidato = $this->textoLivro($candidato);
+            $palavrasCandidatas = $this->normalizarTexto($textoCandidato);
+
+            $scorenome = $this->calcularSimilaridade($palavrasBase, $palavrasCandidatas);
+            $scoreAutor = $candidato->autores->pluck('id')->intersect($autorIds)->count() > 0 ? 20 : 0;
+            $scoreEditora = ($editoraId && $candidato->editora?->id === $editoraId) ? 10 : 0;
+
+            $candidato->score_relacao = $scorenome + $scoreAutor + $scoreEditora;
+
+            return $candidato;
+        })
+            ->sortByDesc('score_relacao')
+            ->take(4)
+            ->values();
+
+        if ($relacionados->every(fn ($item) => $item->score_relacao == 0)) {
+            $relacionados = Livro::with(['autores', 'editora'])
+                ->where('id', '!=', $livro->id)
+                ->latest()
+                ->take(4)
+                ->get();
+        }
+
+        $reviewsAtivas = $livro->reviews()
+            ->with('user')
+            ->where('estado', 'ativo')
+            ->latest()
+            ->take(3)
+            ->get();
+
+        $mediaReviews = $livro->reviews()
+            ->where('estado', 'ativo')
+            ->avg('rating');
+
+        $totalReviews = $livro->reviews()
+            ->where('estado', 'ativo')
+            ->count();
+
+        return view('livros.show', compact(
+            'livro',
+            'relacionados',
+            'reviewsAtivas',
+            'mediaReviews',
+            'totalReviews'
+        ));
+    }
     public function destroy(Livro $livro)
     {
 
@@ -131,7 +184,7 @@ class LivroController extends Controller
 
 
 
-        // ✅ Validate
+
         $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'isbn' => 'required|string|max:50',
@@ -233,5 +286,61 @@ class LivroController extends Controller
         return redirect()->route('livros.autor')->with('success', 'Autor atualizado com sucesso.');
     }
 
+    private function textoLivro($livro): string
+    {
+        return trim($livro->nome ?? '');
+    }
+
+    private function normalizarTexto(?string $texto): array
+    {
+        $texto = mb_strtolower($texto ?? '');
+        $texto = preg_replace('/[^\p{L}\p{N}\s]/u', ' ', $texto);
+        $texto = preg_replace('/\s+/', ' ', trim($texto));
+
+        $stopWords = [
+            'a', 'o', 'e', 'de', 'do', 'da', 'dos', 'das', 'um', 'uma',
+            'uns', 'umas', 'em', 'no', 'na', 'nos', 'nas', 'por', 'para',
+            'com', 'sem', 'sobre', 'que', 'se', 'ao', 'à', 'às', 'os', 'as'
+        ];
+
+        $palavras = explode(' ', $texto);
+
+        $palavras = array_filter($palavras, function ($palavra) use ($stopWords) {
+            return mb_strlen($palavra) > 2 && !in_array($palavra, $stopWords);
+        });
+
+        return array_values($palavras);
+    }
+    private function calcularSimilaridade(array $palavrasBase, array $palavrasComparadas): int
+    {
+        if (empty($palavrasBase) || empty($palavrasComparadas)) {
+            return 0;
+        }
+
+        return count(array_intersect($palavrasBase, $palavrasComparadas));
+    }
+
+
+
+    public function alerta(Livro $livro)
+    {
+        $user = auth()->user();
+
+        $existe = AlertaLivro::where('user_id', $user->id)
+            ->where('livro_id', $livro->id)
+            ->whereNull('notificado_em')
+            ->exists();
+
+        if ($existe) {
+            return back()->with('error', 'Já pediste alerta para este livro.');
+        }
+
+        AlertaLivro::create([
+            'user_id' => $user->id,
+            'livro_id' => $livro->id,
+        ]);
+
+        return back()->with('success', 'Vais ser avisado quando o livro estiver disponível.');
+    }
 
 }
