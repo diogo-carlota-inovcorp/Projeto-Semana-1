@@ -58,4 +58,18 @@ class AdminUsersController extends Controller
 
         return view('admin.utilizadores.gestao', compact('users', 'q'));
     }
+
+    public function encomendas()
+    {
+            $q = request()->query('q');
+            $users = User::query()
+                ->when($q, function ($query) use ($q) {
+                    $query->where('name', 'like', "%{$q}%")
+                        ->orWhere('email', 'like', "%{$q}%");
+                })
+                ->latest()
+                ->get();
+
+        return view('admin.utilizadores.encomendas', compact( 'users', 'q'));
+    }
 }

@@ -41,6 +41,13 @@
                         Voltar
                     </a>
 
+                    <form method="POST" action="{{ route('cart.add', $livro) }}">
+                        @csrf
+                        <button class="btn btn-success">
+                            Comprar
+                        </button>
+                    </form>
+
                     @can('ViewAdicionar')
                         <a href="{{ route('livros.edit', $livro->id) }}" class="btn btn-primary">
                             Editar

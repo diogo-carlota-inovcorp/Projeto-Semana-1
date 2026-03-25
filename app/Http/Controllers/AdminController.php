@@ -6,6 +6,10 @@ use App\Models\Editora;
 use App\Models\Autor;
 use Illuminate\Http\Request;
 use App\Models\Review;
+use App\Models\Livro;
+use App\Models\Order;
+use App\Models\OrderItem;
+use App\Models\User;
 
 class AdminController extends Controller
 {

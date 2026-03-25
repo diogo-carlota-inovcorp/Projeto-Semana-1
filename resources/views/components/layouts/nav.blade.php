@@ -53,11 +53,28 @@
 
                 @endcan
 
+
             <form method="POST" action="/logout">
                 @csrf
                 @method('DELETE')
                 <button class="btn btn-error">Log Out</button>
             </form>
+                    <a href="{{ route('cart.index') }}" class="relative btn btn-ghost">
+
+                        {{-- Icon --}}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"/>
+                        </svg>
+
+                        {{-- Badge --}}
+                        @if(count(session('cart', [])) > 0)
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+            {{ count(session('cart', [])) }}
+        </span>
+                        @endif
+
+                    </a>
 
         @endauth
     </div>

@@ -46,4 +46,9 @@ class Livro extends Model
         return $this->hasMany(AlertaLivro::class);
     }
 
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
 }
