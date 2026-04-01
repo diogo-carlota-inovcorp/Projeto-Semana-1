@@ -7,6 +7,7 @@ use App\Models\Livro;
 use App\Models\Autor;
 use App\Models\Editora;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LivroController extends Controller
 {

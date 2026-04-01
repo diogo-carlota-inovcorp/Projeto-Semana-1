@@ -17,6 +17,24 @@
 <x-layouts.nav>
 
 </x-layouts.nav>
+
+<div class="fixed top-20 left-4 flex flex-col items-center gap-2 z-50">
+
+@auth
+    @php $user = auth()->user(); @endphp
+
+    <a href="/perfil">
+        <img
+            src="{{ $user->foto_perfil
+                ? asset('storage/' . $user->foto_perfil)
+                : asset('images/autor-default.jpg') }}"
+            alt="Profile"
+            class="w-12 h-12 rounded-full object-cover border-2 border-primary"
+        >
+    </a>
+@endauth
+
+</div>
 <main class="max-w-3xl mx-auto mt-6 ">
 
     @if (session('success'))
@@ -29,7 +47,7 @@
                 const el = document.getElementById('flash-success');
                 if (el) {
                     el.classList.add('opacity-0');
-                    setTimeout(() => el.remove(), 300); // small fade then remove
+                    setTimeout(() => el.remove(), 300); 
                 }
             }, 2000);
         </script>

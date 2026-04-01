@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // aliases aqui
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'log.activity' => \App\Http\Middleware\LogUserActivity::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

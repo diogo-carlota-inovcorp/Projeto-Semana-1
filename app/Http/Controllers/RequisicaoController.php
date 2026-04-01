@@ -54,51 +54,63 @@ class RequisicaoController extends Controller
         ));
     }
 
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'livro_id' => ['required', 'integer', 'exists:livros,id'],
-        ]);
+   // app/Http/Controllers/RequisicaoController.php
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'livro_id' => ['required', 'integer', 'exists:livros,id'],
+    ]);
 
-        $user = auth()->user();
-        $livroId = (int)$validated['livro_id'];
+    $user = auth()->user();
+    $livroId = (int)$validated['livro_id'];
 
-        $ativasUser = Requisicao::where('user_id', $user->id)
-            ->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
-            ->count();
+    // Buscar o livro
+    $livro = Livro::findOrFail($livroId);
 
-        if ($ativasUser >= 3) {
-            return back()->with('error', 'Só podes ter 3 livros requisitados em simultâneo.');
-        }
-
-        $ocupado = Requisicao::where('livro_id', $livroId)
-            ->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
-            ->exists();
-
-        if ($ocupado) {
-            return back()->with('error', 'Este livro já está em processo de requisição.');
-        }
-
-        $requisicao = Requisicao::create([
-            'user_id' => $user->id,
-            'livro_id' => $livroId,
-            'fim_previsto' => now()->addDays(5),
-            'status' => 'pendente',
-        ]);
-
-        $requisicao->load(['user', 'livro']);
-
-        $user->notify(new RequisicaoConfirmadaNotification($requisicao));
-
-        $admins = User::where('role', 'admin')->get();
-
-        foreach ($admins as $admin) {
-            $admin->notify(new AdminNovaRequisicaoNotification($requisicao));
-        }
-
-        return redirect()->route('requisicoes.minhas')
-            ->with('success', 'Requisição criada com sucesso!');
+    // VERIFICAR STOCK
+    if ($livro->stock <= 0) {
+        return back()->with('error', 'Este livro não tem stock disponível no momento.');
     }
+
+    $ativasUser = Requisicao::where('user_id', $user->id)
+        ->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
+        ->count();
+
+    if ($ativasUser >= 3) {
+        return back()->with('error', 'Só podes ter 3 livros requisitados em simultâneo.');
+    }
+
+    $ocupado = Requisicao::where('livro_id', $livroId)
+        ->whereIn('status', ['pendente', 'ativa', 'por_confirmar'])
+        ->exists();
+
+    if ($ocupado) {
+        return back()->with('error', 'Este livro já está em processo de requisição.');
+    }
+
+    // REDUZIR O STOCK
+    $livro->decrement('stock');
+
+    $requisicao = Requisicao::create([
+        'user_id' => $user->id,
+        'livro_id' => $livroId,
+        'fim_previsto' => now()->addDays(5),
+        'status' => 'pendente',
+    ]);
+
+    $requisicao->load(['user', 'livro']);
+
+    $user->notify(new RequisicaoConfirmadaNotification($requisicao));
+
+    $admins = User::where('role', 'admin')->get();
+
+    foreach ($admins as $admin) {
+        $admin->notify(new AdminNovaRequisicaoNotification($requisicao));
+    }
+
+    return redirect()->route('requisicoes.minhas')
+        ->with('success', 'Requisição criada com sucesso!');
+}
 
 
     public function show(Requisicao $requisicao)
@@ -161,33 +173,37 @@ class RequisicaoController extends Controller
             ->with('success', 'Pedido de devolução enviado. Aguarda confirmação do administrador.');
     }
 
-    public function confirmarDevolucao(Requisicao $requisicao)
-    {
-        if ($requisicao->status !== 'por_confirmar') {
-            return back()->with('error', 'Esta requisição não está por confirmar.');
-        }
-
-        $requisicao->update([
-            'status' => 'entregue',
-            'devolvido_em' => now(),
-        ]);
-
-        $livro = $requisicao->livro;
-
-        $alertas = AlertaLivro::where('livro_id', $livro->id)
-            ->whereNull('notificado_em')
-            ->with('user')
-            ->get();
-
-        foreach ($alertas as $alerta) {
-            $alerta->user->notify(new LivroDisponivelNotification($livro));
-
-            $alerta->update([
-                'notificado_em' => now(),
-            ]);
-        }
-
-        return back()->with('success', 'Devolução confirmada. O utilizador já pode fazer a review.');
+   
+public function confirmarDevolucao(Requisicao $requisicao)
+{
+    if ($requisicao->status !== 'por_confirmar') {
+        return back()->with('error', 'Esta requisição não está por confirmar.');
     }
+
+    $requisicao->update([
+        'status' => 'entregue',
+        'devolvido_em' => now(),
+    ]);
+
+    $livro = $requisicao->livro;
+
+    // REPOR O STOCK QUANDO O LIVRO É DEVOLVIDO
+    $livro->increment('stock');
+
+    $alertas = AlertaLivro::where('livro_id', $livro->id)
+        ->whereNull('notificado_em')
+        ->with('user')
+        ->get();
+
+    foreach ($alertas as $alerta) {
+        $alerta->user->notify(new LivroDisponivelNotification($livro));
+
+        $alerta->update([
+            'notificado_em' => now(),
+        ]);
+    }
+
+    return back()->with('success', 'Devolução confirmada. O utilizador já pode fazer a review.');
+}
 }
 

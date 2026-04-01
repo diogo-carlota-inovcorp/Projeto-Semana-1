@@ -9,121 +9,108 @@
     </div>
 
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-100 place-items-center py-30 items-stretch">
-        <div class="card w-96 bg-base-200 shadow-sm"><div class="card-body">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-100 place-items-center py-20 items-stretch">
+        <div class="card w-96 bg-base-200 shadow-sm">
+            <figure class="h-52 w-full overflow-hidden">
+
+      <img src="/images/livros_aba.jpg" alt="Books" />
+
+  </figure>
+  <div class="card-body">
 
                 <div class="flex justify-between">
-                    <h2 class="text-3xl font-bold">Adicionar Editora</h2>
+                    <h2 class="text-3xl font-bold">Adicionar Livros</h2>
                 </div>
-                <p class="text-lg">Informações necessárias:</p>
+                <p class="text-lg">Possibilidades:</p>
 
                 <ul class="mt-6 flex flex-col gap-2 text-xs">
                     <li>
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Nome da empresa editora</span>
+                        <span class="text-lg">Adicionar Livro</span>
                     </li>
                     <li>
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Imagem Logo da empresa</span>
+                        <span class="text-lg">Adicionar Editora</span>
+                    </li>
+                     <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-lg">Adicionar Autor</span>
                     </li>
                 </ul>
 
-                <div class="mt-4 mb-4 h-28 rounded-xl bg-base-200/10 border border-base-content/10 p-4">
-                    <div class="flex gap-2 items-center">
-                        <div class="h-14 w-12 rounded-lg bg-base-300/20 border border-base-content/10 flex items-center justify-center text-xs text-base-content/50">
-                            IMG
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <div class="h-3 w-3/4 rounded bg-base-content/10"></div>
-                            <div class="h-3 w-2/3 rounded bg-base-content/10"></div>
-                            <div class="h-3 w-1/2 rounded bg-base-content/10"></div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="mt-6">
-                    <a class="btn btn-primary btn-block" href="/admin/adicionar_editora">Adicionar</a>
+                    <a class="btn btn-primary btn-block" href="/admin/admin_adicionar">Consultar</a>
                 </div>
             </div></div>
-        <div class="card w-96 bg-base-200 shadow-sm"><div class="card-body">
-                <div class="flex justify-between">
-                    <h2 class="text-3xl font-bold">Adicionar Livro</h2>
-                </div>
 
-                <p class="text-lg">Informações necessárias:</p>
+            <div class="card w-96 bg-base-200 shadow-sm">
+                <figure class="h-52 w-full overflow-hidden">
+  <img src="/images/admins.webp" alt="admins" />
+  </figure>
+        <div class="card-body flex flex-col justify-between">
 
-                <ul class="mt-6 flex flex-col gap-2 text-xs">
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Título</span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">ISBN</span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Editora</span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Autor</span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Bibliografia</span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Preço</span>
-                    </li>
-                    <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Capa do livro</span>
-                    </li>
-
-                </ul>
-                <div>
-                    <a class="btn btn-primary btn-block" href="/admin/adicionar_livro" >Adicionar</a>
-                </div>
+        <div>
+            <div class="flex justify-between">
+                <h2 class="text-3xl font-bold">Consulta Admin</h2>
             </div>
+
+            <p class="text-lg">Possibilidades:</p>
+
+            <ul class="mt-6 flex flex-col gap-2 text-xs">
+                <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-lg">Ver Reviews</span>
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-lg">Ver Utilizadores</span>
+                    </li>
+                    <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-lg">Ver Encomendas</span>
+                    </li>
+            </ul>
         </div>
 
-        <div class="card w-96 bg-base-200 shadow-sm"><div class="card-body">
+        <div class="mt-6">
+            <a class="btn btn-primary btn-block" href="{{ route('admin.users.index') }}">
+                Consultar
+            </a>
+        </div>
+
+     </div>
+    </div>
+
+
+
+        <div class="card w-96 bg-base-200 shadow-sm">
+            <figure class="h-52 w-full overflow-hidden">
+   <img src="/images/logs.webp" alt="Logs" />
+  </figure><div class="card-body">
                 <div class="flex justify-between">
-                    <h2 class="text-3xl font-bold">Adicionar Autor</h2>
+                    <h2 class="text-3xl font-bold">Observar Logs</h2>
                 </div>
 
-                <p class="text-lg">Informações necessárias:</p>
+                <p class="text-lg">Possibilidades:</p>
 
 
                 <ul class="mt-6 flex flex-col gap-2 text-xs">
                     <li>
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Nome do Autor</span>
+                        <span class="text-lg">Ver o nome do utilizador</span>
                     </li>
                     <li>
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
-                        <span class="text-lg">Foto do Autor</span>
+                        <span class="text-lg">Ver Data da interação</span>
+                    </li>
+                     <li>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="size-4 me-2 inline-block text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                        <span class="text-lg">Ver detalhes do Log</span>
                     </li>
 
                 </ul>
-
-                <div class="mt-4 mb-4 h-28 rounded-xl bg-base-200/10 border border-base-content/10 p-4">
-                    <div class="flex gap-2 items-center">
-                        <div class="h-14 w-12 rounded-lg bg-base-300/20 border border-base-content/10 flex items-center justify-center text-xs text-base-content/50">
-                            IMG
-                        </div>
-                        <div class="flex-1 space-y-2">
-                            <div class="h-3 w-3/4 rounded bg-base-content/10"></div>
-                            <div class="h-3 w-2/3 rounded bg-base-content/10"></div>
-                            <div class="h-3 w-1/2 rounded bg-base-content/10"></div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="mt-6">
-                    <a class="btn btn-primary btn-block" href="/admin/adicionar_autor" >Adicionar</a>
+                    <a class="btn btn-primary btn-block" href="{{ route('admin.logs.index') }}">Consultar</a>
                 </div>
             </div></div>
     </div>

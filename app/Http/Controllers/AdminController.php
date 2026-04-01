@@ -36,6 +36,11 @@ class AdminController extends Controller
     }
 
 
+    public function admin_adicionar()
+{
+    return view('admin.admin_adicionar'); // adjust to your view path
+}
+
     public function adicionar_livro()
     {
         $editoras = Editora::orderBy('nome')->get();

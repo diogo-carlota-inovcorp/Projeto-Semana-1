@@ -20,8 +20,9 @@ use App\Http\Controllers\AdminUsersController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminReviewController;
-
-
+use App\Http\Controllers\AdminLogController;
+use App\Exports\LogsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 
@@ -51,6 +52,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/admin/admin', [AdminController::class, 'index'])->name('admin.index');
 
         // Gestão de Livros
+        Route::get('/admin/admin_adicionar', [AdminController::class, 'admin_adicionar'])->name('admin.admin_adicionar');
         Route::get('/admin/adicionar_livro', [AdminController::class, 'adicionar_livro'])->name('admin.adicionar_livro');
         Route::get('/admin/adicionar_autor', [AdminController::class, 'adicionar_autor'])->name('admin.adicionar_autor');
         Route::get('/admin/adicionar_editora', [AdminController::class, 'adicionar_editora'])->name('admin.adicionar_editora');
@@ -110,6 +112,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
         Route::get('/users/{user}/orders', [AdminOrderController::class, 'userOrders'])->name('users.orders');
         Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+
+
+        //ROUTE PARA LOGS
+            Route::get('/admin/logs', [AdminLogController::class, 'index'])->name('admin.logs.index');
+            Route::get('/admin/logs/{log}', [AdminLogController::class, 'show'])->name('admin.logs.show');
+            Route::delete('/admin/logs/{log}', [AdminLogController::class, 'destroy'])->name('admin.logs.destroy');
+           
+
 });
 
 

@@ -124,14 +124,23 @@ public function success(Request $request)
     $sessionId = $request->query('session_id');
 
     if ($sessionId) {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-        $stripeSession = StripeSession::retrieve($sessionId);
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        $stripeSession = \Stripe\Checkout\Session::retrieve($sessionId);
 
         $order = Order::where('stripe_checkout_session_id', $stripeSession->id)
             ->where('user_id', auth()->id())
             ->first();
 
-        if ($order && $order->estado === 'paga') {
+        if ($order) {
+
+
+
+            if ($order->estado !== 'paga') {
+                $order->estado = 'paga';
+                $order->save();
+            }
+
+
             session()->forget('cart');
             session()->forget('checkout_address');
         }
