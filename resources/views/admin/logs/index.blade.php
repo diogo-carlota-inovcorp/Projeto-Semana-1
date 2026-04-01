@@ -1,9 +1,12 @@
 <!-- resources/views/admin/logs/index.blade.php -->
 <x-layouts.layout title="Logs do Sistema">
+
     <div class="container mx-auto py-8 px-4">
+
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-3xl font-bold">Logs do Sistema</h1>
             <form method="GET" class="flex gap-2">
+
                 <select name="modulo" class="select select-bordered">
                     <option value="">Todos os módulos</option>
                     @foreach($modulos as $modulo)

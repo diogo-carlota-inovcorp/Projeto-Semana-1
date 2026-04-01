@@ -26,7 +26,7 @@ class AdminLogController extends Controller
 
         $modulos = Log::distinct()->pluck('modulo');
 
-        $logs = $query->orderBy('nome')->paginate(10);
+        $logs = $query->orderBy('data_hora', 'desc')->paginate(10);
 
         return view('admin.logs.index', compact('logs', 'modulos'));
     }
