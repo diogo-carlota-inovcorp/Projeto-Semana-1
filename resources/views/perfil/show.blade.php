@@ -51,6 +51,25 @@
                     <label class="form-label fw-bold">Email</label>
                     <div>{{ $user->email }}</div>
                 </div>
+
+                <div class="mt-4">
+    <h5 class="mb-3">Ações</h5>
+
+    <div class="d-flex flex-wrap gap-3">
+        <a href="http://chat.test/login" target="_blank" class="btn btn-outline-primary">
+    Chat
+</a>
+
+        <a href="{{ route('requisicoes.minhas') }}" class="btn btn-outline-info">
+            Requisições
+        </a>
+
+        <a href="{{ route('orders.index') }}" class="btn btn-outline-warning">
+            Encomendas
+        </a>
+
+    </div>
+</div>
             </form>
         </div>
     </div>

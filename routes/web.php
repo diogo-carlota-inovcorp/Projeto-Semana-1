@@ -39,6 +39,7 @@ Route::get('/livros/{livro}', [LivroController::class, 'show'])->name('livros.sh
 Route::post('/stripe/webhook', [StripeWebhookController::class, 'handle'])->name('stripe.webhook');
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Auth + verified
@@ -118,7 +119,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('/admin/logs', [AdminLogController::class, 'index'])->name('admin.logs.index');
             Route::get('/admin/logs/{log}', [AdminLogController::class, 'show'])->name('admin.logs.show');
             Route::delete('/admin/logs/{log}', [AdminLogController::class, 'destroy'])->name('admin.logs.destroy');
-           
+
+       
 
 });
 

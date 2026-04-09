@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -50,6 +51,32 @@ class User extends Authenticatable implements MustVerifyEmail
     public function orders()
 {
     return $this->hasMany(Order::class);
+}
+
+public function salas()
+{
+    return $this->belongsToMany(Sala::class, 'sala_user');
+}
+
+public function mensagens()
+{
+    return $this->hasMany(Mensagem::class);
+}
+
+public function mensagensNaoLidas()
+{
+    return $this->hasMany(MensagemNaoLida::class);
+}
+
+
+public function isAdmin()
+{
+    return $this->permissao === 'admin';
+}
+
+public function getTotalNaoLidasAttribute()
+{
+    return $this->mensagensNaoLidas()->sum('quantidade');
 }
 
 }

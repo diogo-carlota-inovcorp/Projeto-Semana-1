@@ -23,14 +23,16 @@
 @auth
     @php $user = auth()->user(); @endphp
 
-    <a href="/perfil">
-        <img
-            src="{{ $user->foto_perfil
-                ? asset('storage/' . $user->foto_perfil)
-                : asset('images/autor-default.jpg') }}"
-            alt="Profile"
-            class="w-12 h-12 rounded-full object-cover border-2 border-primary"
-        >
+    <a href="/perfil" class="relative">
+        <div class="relative inline-block">
+            <img
+                src="{{ $user->foto_perfil
+                    ? asset('storage/' . $user->foto_perfil)
+                    : asset('images/autor-default.jpg') }}"
+                alt="Profile"
+                class="w-12 h-12 rounded-full object-cover border-2 border-primary"
+            >
+        </div>
     </a>
 @endauth
 
@@ -47,7 +49,7 @@
                 const el = document.getElementById('flash-success');
                 if (el) {
                     el.classList.add('opacity-0');
-                    setTimeout(() => el.remove(), 300); 
+                    setTimeout(() => el.remove(), 300);
                 }
             }, 2000);
         </script>
@@ -57,6 +59,7 @@
 
     {{ $slot }}
 </main>
+
 
 
 </body>
